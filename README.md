@@ -7,4 +7,4 @@
 
 
 ### typescript
-- [记一次在react+ts+webpack项目中使用alias设置别名无法识别的问题](https://github.com/lxnxbnq/blog/issues/5)
+- [typescript开发常见问题](https://github.com/lxnxbnq/blog/issues/5)
