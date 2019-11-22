@@ -1,5 +1,5 @@
 # Blog
-> 如果能坚持做一件事情5年，即使不能成为专家，但也会很酷。
+> 如果能坚持做一件事情5年，就算不能成为专家，也会很酷。
 
 ### React篇
 - [redux源码解析](https://github.com/lxnxbnq/blog/issues/1)
