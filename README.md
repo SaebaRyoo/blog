@@ -9,3 +9,6 @@
 
 ### typescript
 - [typescript开发常见问题](https://github.com/lxnxbnq/blog/issues/5)
+
+### web安全
+- [常见web安全问题](https://github.com/lxnxbnq/blog/issues/6)
