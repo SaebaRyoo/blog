@@ -10,7 +10,7 @@
 <details>
   <summary>React篇</summary>
  
-  - [声明周期](https://github.com/lxnxbnq/blog/issues/9)
+  - [生命周期](https://github.com/lxnxbnq/blog/issues/9)
   - [redux源码解析](https://github.com/lxnxbnq/blog/issues/1)
   - [redux-thunk源码解析](https://github.com/lxnxbnq/blog/issues/2)
   - [HashRouter和BrowserRouter](https://github.com/lxnxbnq/blog/issues/4)
