@@ -1,5 +1,11 @@
 # Blog
 > 如果能坚持做一件事情5年，就算不能成为专家，也会很酷。
+<details>
+  <summary>javascript</summary>
+  
+  - [Object.defineProperty的用法](https://github.com/lxnxbnq/blog/issues/7)
+  
+</details>
 
 <details>
   <summary>React篇</summary>
