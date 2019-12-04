@@ -1,5 +1,4 @@
 # Blog
-> 如果能坚持做一件事情5年，就算不能成为专家，也会很酷。
 <details>
   <summary>javascript</summary>
   
