@@ -7,7 +7,7 @@ React暴露出了createElement用于给我们创建Virtual DOM。它接收三个
 
 这一步的执行过程大概如下
 `createElementWithValidation -> createElement -> ReactElement`
-最后返回如下结构的虚拟DOM
+最后返回如下结构的虚拟DOM对象
 ```
 {
     // This tag allows us to uniquely identify this as a React Element
@@ -23,7 +23,7 @@ React暴露出了createElement用于给我们创建Virtual DOM。它接收三个
 };
 ```
 
-### ReactDOM.render(element, container, [callback])
+### ReactDOM.render(element/*vDOM对象，如上*/, container, [callback])
 该方法用来渲染顶层的React组件，也就是`Virtual DOM`的顶层对象。然后执行`legacyRenderSubtreeIntoContainer`。
 
 在`legacyRenderSubtreeIntoContainer`中, 初始化时，如果当前节点为根节点，那么，会走到如下的分支中
@@ -47,7 +47,44 @@ React暴露出了createElement用于给我们创建Virtual DOM。它接收三个
   }
 ```
 
-在将`upbatchedUpdates`前，我们看一下一些常量和变量
+然后通过`legacyCreateRootFromDOMContainer`进入`FiberRootNode`生成一个根Fiber结构，大致如下
+```
+  
+function FiberRootNode(containerInfo, tag, hydrate) {
+  this.tag = tag;
+  this.current = null;
+  this.containerInfo = containerInfo;
+  this.pendingChildren = null;
+  this.pingCache = null;
+  this.finishedExpirationTime = NoWork;
+  this.finishedWork = null;
+  this.timeoutHandle = noTimeout;
+  this.context = null;
+  this.pendingContext = null;
+  this.hydrate = hydrate;
+  this.callbackNode = null;
+  this.callbackPriority = NoPriority;
+  this.firstPendingTime = NoWork;
+  this.firstSuspendedTime = NoWork;
+  this.lastSuspendedTime = NoWork;
+  this.nextKnownPendingLevel = NoWork;
+  this.lastPingedTime = NoWork;
+  this.lastExpiredTime = NoWork;
+
+  if (enableSchedulerTracing) {
+    this.interactionThreadID = tracing.unstable_getThreadID();
+    this.memoizedInteractions = new Set();
+    this.pendingInteractionMap = new Map();
+  }
+
+  if (enableSuspenseCallback) {
+    this.hydrationCallbacks = null;
+  }
+}
+```
+
+
+在讲`upbatchedUpdates`前，我们看一下一些常量和变量
 ```
 const NoContext = /*                    */ 0b000000;
 const BatchedContext = /*               */ 0b000001;
@@ -64,6 +101,7 @@ let executionContext: ExecutionContext = NoContext;
 上面的一些常量都是定义的React中对应的执行站。变量`executionContext`则记录当前的执行栈.
 
 现在，我们回到`upbatchedUpdates`方法中
+这是首次渲染时才会进入的函数，**是不是为了消除批量更新，加快首屏渲染速度？**
 
 ```
 export function unbatchedUpdates<A, R>(fn: (a: A) => R, a: A): R {
@@ -88,3 +126,20 @@ export function unbatchedUpdates<A, R>(fn: (a: A) => R, a: A): R {
 ```
 
 然后进入`updateContainer`
+通过`requestCurrentTimeForUpdate`计算出当前时间`currentTime`,该值分为三种
+```
+function requestCurrentTimeForUpdate() {
+  if ((executionContext & (RenderContext | CommitContext)) !== NoContext) {
+    // React内部
+    return msToExpirationTime(now());
+  } 
+  // 可能处于浏览器的事件中
+  if (currentEventTime !== NoWork) {
+    // Use the same start time for all updates until we enter React again.
+    return currentEventTime;
+  }
+  // 这个react创建后的第一次更新，重新计算开始时间
+  currentEventTime = msToExpirationTime(now());
+  return currentEventTime;
+}
+```
