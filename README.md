@@ -6,6 +6,7 @@
   - [ ] [Object.defineProperty的用法](https://github.com/lxnxbnq/blog/issues/7)
   - [ ] [Proxy构造函数](https://github.com/lxnxbnq/blog/issues/13)
   - [ ] [Reflect]()
+  - [ ] [Promise/A+规范实现](https://github.com/lxnxbnq/blog/issues/14)
   
 </details>
 
