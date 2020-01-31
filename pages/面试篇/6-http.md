@@ -1,0 +1,35 @@
+### 为什么传统上利用多个域名来提供网站资源会更有效
+
+因为浏览器的网络进程在请求同一个域名的资源时，最多只能维持6个tcp持久连接，所以可以将资源放置在不同的服务器
+
+### [Long-Polling、Websockets 和 Server-Sent Event](https://juejin.im/post/5b135b78f265da6e420eab7d#heading-5)
+
+### [常见的请求头、响应头](https://juejin.im/post/5c17d3cd5188250d9e604628)
+
+### [和缓存有关的HTTP首部字段](https://juejin.im/post/5a6eb7e06fb9a01c9a27014b)
+
+### [HTTP method](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Methods)
+
+| 方法 | 作用 |
+| - | -|
+| [GET](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/GET) | GET方法请求一个指定资源的表示形式. 使用GET的请求应该只被用于获取数据. |
+| [HEAD](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/HEAD) | HEAD方法请求一个与GET请求的响应相同的响应，但没有响应体.|
+| [POST](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/POST)  | POST方法用于将实体提交到指定的资源，通常导致在服务器上的状态变化或副作用. |
+| [PUT](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/PUT) | PUT方法用请求有效载荷替换目标资源的所有当前表示。
+| [DELETE](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/DELETE) | DELETE方法删除指定的资源。
+| [CONNECT](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/CONNECT) | CONNECT方法建立一个到由目标资源标识的服务器的隧道。
+| [OPTIONS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/OPTIONS) | OPTIONS方法用于描述目标资源的通信选项。
+| [TRACE](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/TRACE) | TRACE方法沿着到目标资源的路径执行一个消息环回测试。
+| [PATCH](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/PATCH) | PATCH方法用于对资源应用部分修改。
+
+### [http响应码](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status)
+
+### [https 加密过程](https://www.jianshu.com/p/2b89b7ac7c9d)
+https://blog.csdn.net/clh604/article/details/22179907
+
+### [http2新特性](https://www.jianshu.com/p/67c541a421f9)
+
+多路复用
+可以设置请求优先级
+服务器推送
+头部压缩
