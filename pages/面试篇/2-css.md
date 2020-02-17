@@ -105,7 +105,7 @@ transform:scaleY(0);
 
 ### 你用过媒体查询，或针对移动端的布局CSS 吗？
 - 媒体查询可用于响应式网站样式，也可针对不同型号手机的尺寸写不同的样式
-- 通过rem布局
+- [通过rem布局](https://blog.csdn.net/lvyang251314/article/details/82798858)
 - 通过vw/vh布局移动端css
 
 ### [如何优化网页的打印样式？](https://www.html.cn/archives/4731)
