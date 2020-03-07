@@ -26,7 +26,7 @@
   - [ ] [Object.defineProperty的用法](https://github.com/lxnxbnq/blog/issues/7)
   - [ ] [Proxy构造函数](https://github.com/lxnxbnq/blog/issues/13)
   - [ ] [Reflect]()
-  - [ ] [Promise/A+规范实现](https://github.com/lxnxbnq/blog/issues/14)
+  - [x] [Promise/A+规范实现](https://github.com/lxnxbnq/blog/issues/14)
   - [x] [高程中的创建对象的方法](https://github.com/lxnxbnq/blog/issues/17)
   - [x] [高程中的继承方法](https://github.com/lxnxbnq/blog/issues/18)
   
