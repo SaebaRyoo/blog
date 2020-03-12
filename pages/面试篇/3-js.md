@@ -293,6 +293,55 @@ person2.info.sex; // male
 
 ### [深拷贝和浅拷贝](https://juejin.im/post/59ac1c4ef265da248e75892b)
 
+```
+var obj = {
+  name: 'william',
+  age: 20,
+  other: {
+    work: 'code',
+    eat: ['胡萝卜', '西瓜', {test: 1}],
+  },
+}
+
+var arr = [1,2,3, [4,5, {test: 6}]]
+
+function deepClone(data) {
+  var type = Object.prototype.toString.call(data);
+  var newData;
+
+  if (type === "[object Object]") {
+    newData = {};
+    for (var key in data) {
+      if (
+        Object.prototype.toString.call(data[key]) !== "[object Object]" &&
+        Object.prototype.toString.call(data[key]) !== "[object Array]" &&
+        hasOwnProperty.call(data, key) &&
+        !hasOwnProperty.call(newData, key)
+      ) {
+        newData[key] = data[key]
+      } else {
+        newData[key] = deepClone(data[key])
+      }
+    }
+  } else if (type === "[object Array]") {
+    newData = [];
+    for (var i =0; i < data.length; i++) {
+      if (
+        Object.prototype.toString.call(data[i]) !== "[object Object]" &&
+        Object.prototype.toString.call(data[i]) !== "[object Array]"
+      ) {
+        newData.push(data[i])
+      } else {
+        newData.push(deepClone(data[i]))
+      }
+    }
+  } else {
+    return data;
+  }
+  return newData;
+}
+```
+
 ### [图片懒加载](https://juejin.im/post/583b10640ce463006ba2a71a)
 
 ### [网页上各种高度](https://blog.csdn.net/gs6511/article/details/53900761)
