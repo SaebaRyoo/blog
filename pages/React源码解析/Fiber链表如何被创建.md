@@ -1,0 +1,387 @@
+> 作为新版本中的灵魂也是最基础的fiber结构是如何通过虚拟DOM被创建的呢？这就是本章的目的.
+
+
+### 带着问题看代码
+
+1. `VirtualDOM`是如何和`Fiber(单向链表)`结构挂钩的
+
+### 源码解析
+首先，肯定是调用了`ReactDOM.render`并传入的`VirtualDOM`以及`根节点`。
+继续往下看后会进入到一个`legacyRenderSubtreeIntoContainer`函数中。
+这当中的`legacyCreateRootFromDOMContainer`就是为react创建一个基本的`FiberRoot`和`RootFiber`。以供下面调度任务中根据虚拟DOM逐步创建Fiber任务
+
+```
+
+function legacyRenderSubtreeIntoContainer(
+  parentComponent: ?React$Component<any, any>,
+  children: ReactNodeList,
+  container: Container,
+  forceHydrate: boolean,
+  callback: ?Function,
+) {
+
+  let root: RootType = (container._reactRootContainer: any);
+  let fiberRoot;
+  if (!root) {
+    // Initial mount
+    // 1. 创建一个fiber节点(FiberRootNode、FiberNode)
+    // 2. 初始化updateQueue
+    //  root为ReactRoot实例，
+    //  root._internalRoot 即为FiberRoot，为Fiber的父节点
+    //  root._internalRoot.current即为RootFiber，为根Fiber节点
+    //  root._internalRoot.current.stateNode === root._internalRoot
+    root = container._reactRootContainer = legacyCreateRootFromDOMContainer(
+      container,
+      forceHydrate,
+    );
+    fiberRoot = root._internalRoot;
+
+    // Initial mount should not be batched.
+    unbatchedUpdates(() => {
+      // children是虚拟DOM，fiberRoot是整个任务的根
+      updateContainer(children, fiberRoot, parentComponent, callback);
+    });
+  } else {
+    fiberRoot = root._internalRoot;
+    if (typeof callback === 'function') {
+      const originalCallback = callback;
+      callback = function() {
+        const instance = getPublicRootInstance(fiberRoot);
+        originalCallback.call(instance);
+      };
+    }
+    // Update
+    updateContainer(children, fiberRoot, parentComponent, callback);
+  }
+  return getPublicRootInstance(fiberRoot);
+}
+```
+
+
+主要还是看`updateContainer(children, fiberRoot, parentComponent, callback)`函数，它一共需要传4个参数，首先`callback`可以先排除.`parentComponent`是父节点，初始化的时候为null。主要是`children`是`VirtualDOM`、`fiberRoot`是`fiber的根`。
+
+
+
+`updateContainer`中我们先看`createUpdate`函数。创建一个`update`对象. `update.payload.element`中保存的就是虚拟DOM。
+
+然后在`enqueueUpdate`中，建立与`update`的引用关系
+```
+export function enqueueUpdate<State>(fiber: Fiber, update: Update<State>) {
+
+  // updateQueue结构，
+  // const queue: UpdateQueue<State> = {
+  //   baseState: fiber.memoizedState, // 旧的state
+  //   baseQueue: null,
+  //   shared: {
+  //     pending: null,
+  //   },
+  //   effects: null,
+  // };
+  const updateQueue = fiber.updateQueue;
+  if (updateQueue === null) {
+    // Only occurs if the fiber has been unmounted.
+    // 仅当fiber卸载时才会触发
+    return;
+  }
+
+  const sharedQueue = updateQueue.shared;
+  const pending = sharedQueue.pending;
+
+  // update结构
+  // let update: Update<*> = {
+  //   expirationTime,
+  //   suspenseConfig,
+
+  //   tag: UpdateState, // 0
+  //   payload: {element},
+  //   callback: null,
+
+  //   next: (null: any),
+  // };
+  if (pending === null) {
+    // This is the first update. Create a circular list.
+    // 首次更新，创建一个循环列表
+    update.next = update;
+  } else {
+    update.next = pending.next;
+    pending.next = update;
+  }
+  // 将update放置到fiber.updateQueue.shared.pending中
+  // fiber中有updateQueue对象，updateQueue.shared.pending 保存了 update对象
+  // fiber.updateQueue.shared.pending.payload.element就是虚拟DOM
+  sharedQueue.pending = update;
+}
+```
+
+---
+
+下面就会进入到`scheduleWork`调度任务中。然后执行`performSyncWorkOnRoot-> renderRootSync`。在这个函数中进入`prepareFreshStack -> createWorkInProgress`。第一个函数主要作用是更改一些全局变量.
+我们看`createWorkInProgress`。在看它之前，我们需要知道，在react中分为`current`和`workInProgress`两种任务。`workInProgress`即表示当前正在进行的fiber任务。然后在这个函数中，将`workInProgress`与`current.alternate`建立引用关系。
+
+然后看fiber同步执行阶段`workLoopSync -> performUnitOfWork`。`performUnitOfWork`会循环执行，返回值表示当前正在进行的fiber任务，直到所有的fiber任务被执行完成后停止。
+
+下面进入到`beginWork`。该函数中会通过`workInProgress.tag`来判断当前fiber的类型，如果是一个类组件，则会进入`ClassComponent`分支中，如果是一个`宿主元素（div、span）`则进入`HostRoot`分支。然后调用`updateHostRoot`。这里主要需要看的就是`processUpdateQueue`。
+
+```
+
+function updateHostRoot(current, workInProgress, renderExpirationTime) {
+  pushHostRootContext(workInProgress);
+  const updateQueue = workInProgress.updateQueue;
+  const nextProps = workInProgress.pendingProps;
+  const prevState = workInProgress.memoizedState;
+  const prevChildren = prevState !== null ? prevState.element : null; // oldTree上的虚拟DOM
+  cloneUpdateQueue(current, workInProgress);
+  // 处理更新队列 setState，在这里会将虚拟DOM保存到当前工作fiber的memoizedState中
+  processUpdateQueue(workInProgress, nextProps, null, renderExpirationTime);
+  // nextState.element === workInprogress.updateQueue.shared.pending.payload.element
+  const nextState = workInProgress.memoizedState;
+  // Caution: React DevTools currently depends on this property
+  // being called "element".
+  // newTree上的虚拟DOM
+  const nextChildren = nextState.element;
+  if (nextChildren === prevChildren) {
+    // If the state is the same as before, that's a bailout because we had
+    // no work that expires at this time.
+    resetHydrationState();
+    // 最后返回child节点，如果没有则返回null
+    return bailoutOnAlreadyFinishedWork(
+      current,
+      workInProgress,
+      renderExpirationTime,
+    );
+  }
+  const root: FiberRoot = workInProgress.stateNode;
+  if (root.hydrate && enterHydrationState(workInProgress)) {
+    // If we don't have any current children this might be the first pass.
+    // We always try to hydrate. If this isn't a hydration pass there won't
+    // be any children to hydrate which is effectively the same thing as
+    // not hydrating.
+
+    let child = mountChildFibers(
+      workInProgress,
+      null,
+      nextChildren,
+      renderExpirationTime,
+    );
+    workInProgress.child = child;
+
+    let node = child;
+    while (node) {
+      // Mark each child as hydrating. This is a fast path to know whether this
+      // tree is part of a hydrating tree. This is used to determine if a child
+      // node has fully mounted yet, and for scheduling event replaying.
+      // Conceptually this is similar to Placement in that a new subtree is
+      // inserted into the React tree here. It just happens to not need DOM
+      // mutations because it already exists.
+      node.effectTag = (node.effectTag & ~Placement) | Hydrating;
+      node = node.sibling;
+    }
+  } else {
+    // Otherwise reset hydration state in case we aborted and resumed another
+    // root.
+    // 调和子节点，进行同层diff对比
+    reconcileChildren(
+      current,
+      workInProgress,
+      nextChildren,
+      renderExpirationTime,
+    );
+    resetHydrationState();
+  }
+  // DFS（深度优先遍历）获取子节点
+  return workInProgress.child;
+}
+```
+
+然后就是`reconcileChildren -> reconcileChildFibers`在这里判断虚拟DOM是否为React节点
+
+```
+function reconcileChildFibers(returnFiber, currentFirstChild, newChild, expirationTime) {
+      // This function is not recursive.
+      // If the top level item is an array, we treat it as a set of children,
+      // not as a fragment. Nested arrays on the other hand will be treated as
+      // fragment nodes. Recursion happens at the normal flow.
+      // Handle top level unkeyed fragments as if they were arrays.
+      // This leads to an ambiguity between <>{[...]}</> and <>...</>.
+      // We treat the ambiguous cases above the same.
+      var isUnkeyedTopLevelFragment = typeof newChild === 'object' && newChild !== null && newChild.type === REACT_FRAGMENT_TYPE && newChild.key === null;
+
+      if (isUnkeyedTopLevelFragment) {
+        newChild = newChild.props.children;
+      } // Handle object types
+
+
+      var isObject = typeof newChild === 'object' && newChild !== null;
+
+      if (isObject) {
+        switch (newChild.$$typeof) {
+          case REACT_ELEMENT_TYPE:
+            // 如果是一个React节点
+            return placeSingleChild(reconcileSingleElement(returnFiber, currentFirstChild, newChild, expirationTime));
+
+          case REACT_PORTAL_TYPE:
+            return placeSingleChild(reconcileSinglePortal(returnFiber, currentFirstChild, newChild, expirationTime));
+        }
+      }
+
+      if (typeof newChild === 'string' || typeof newChild === 'number') {
+        return placeSingleChild(reconcileSingleTextNode(returnFiber, currentFirstChild, '' + newChild, expirationTime));
+      }
+
+      if (isArray$1(newChild)) {
+        return reconcileChildrenArray(returnFiber, currentFirstChild, newChild, expirationTime);
+      }
+
+      if (getIteratorFn(newChild)) {
+        return reconcileChildrenIterator(returnFiber, currentFirstChild, newChild, expirationTime);
+      }
+
+      if (isObject) {
+        throwOnInvalidObjectType(returnFiber, newChild);
+      }
+
+      {
+        if (typeof newChild === 'function') {
+          warnOnFunctionType();
+        }
+      }
+
+      if (typeof newChild === 'undefined' && !isUnkeyedTopLevelFragment) {
+        // If the new child is undefined, and the return fiber is a composite
+        // component, throw an error. If Fiber return types are disabled,
+        // we already threw above.
+        switch (returnFiber.tag) {
+          case ClassComponent:
+            {
+              {
+                var instance = returnFiber.stateNode;
+
+                if (instance.render._isMockFunction) {
+                  // We allow auto-mocks to proceed as if they're returning null.
+                  break;
+                }
+              }
+            }
+          // Intentionally fall through to the next case, which handles both
+          // functions and classes
+          // eslint-disable-next-lined no-fallthrough
+
+          case FunctionComponent:
+            {
+              var Component = returnFiber.type;
+
+              {
+                {
+                  throw Error( (Component.displayName || Component.name || 'Component') + "(...): Nothing was returned from render. This usually means a return statement is missing. Or, to render nothing, return null." );
+                }
+              }
+            }
+        }
+      } // Remaining cases are all treated as empty.
+
+
+      return deleteRemainingChildren(returnFiber, currentFirstChild);
+    }
+```
+
+然后`placeSingleChild-> createFiberFromElement -> createFiberFromTypeAndProps`
+
+在`createFiberFromTypeAndProps`中会声明新的`tag`和`mode`。比如宿主元素(div、span)这类的就为**5**、类组件就为**1**。最后，再通过`createFiber` 创建链表的下一个节点，然后逐层返回。判断是否有新的Fiber任务
+
+```
+
+  function createFiberFromTypeAndProps(type, // React$ElementType
+  key, pendingProps, owner, mode, expirationTime) {
+    var fiber;
+    var fiberTag = IndeterminateComponent; // The resolved type is set if we know what the final type will be. I.e. it's not lazy.
+
+    var resolvedType = type;
+
+    if (typeof type === 'function') {
+      if (shouldConstruct(type)) {
+        fiberTag = ClassComponent;
+
+        {
+          resolvedType = resolveClassForHotReloading(resolvedType);
+        }
+      } else {
+        {
+          resolvedType = resolveFunctionForHotReloading(resolvedType);
+        }
+      }
+    } else if (typeof type === 'string') {
+      fiberTag = HostComponent;
+    } else {
+      getTag: switch (type) {
+        case REACT_FRAGMENT_TYPE:
+          return createFiberFromFragment(pendingProps.children, mode, expirationTime, key);
+
+        case REACT_CONCURRENT_MODE_TYPE:
+          fiberTag = Mode;
+          mode |= ConcurrentMode | BlockingMode | StrictMode;
+          break;
+
+        case REACT_STRICT_MODE_TYPE:
+          fiberTag = Mode;
+          mode |= StrictMode;
+          break;
+
+        case REACT_PROFILER_TYPE:
+          return createFiberFromProfiler(pendingProps, mode, expirationTime, key);
+
+        case REACT_SUSPENSE_TYPE:
+          return createFiberFromSuspense(pendingProps, mode, expirationTime, key);
+
+        case REACT_SUSPENSE_LIST_TYPE:
+          return createFiberFromSuspenseList(pendingProps, mode, expirationTime, key);
+
+        default:
+          {
+            if (typeof type === 'object' && type !== null) {
+              switch (type.$$typeof) {
+                case REACT_PROVIDER_TYPE:
+                  fiberTag = ContextProvider;
+                  break getTag;
+
+                case REACT_CONTEXT_TYPE:
+                  // This is a consumer
+                  fiberTag = ContextConsumer;
+                  break getTag;
+
+                case REACT_FORWARD_REF_TYPE:
+                  fiberTag = ForwardRef;
+
+                  {
+                    resolvedType = resolveForwardRefForHotReloading(resolvedType);
+                  }
+
+                  break getTag;
+
+                case REACT_MEMO_TYPE:
+                  fiberTag = MemoComponent;
+                  break getTag;
+
+                case REACT_LAZY_TYPE:
+                  fiberTag = LazyComponent;
+                  resolvedType = null;
+                  break getTag;
+
+                case REACT_BLOCK_TYPE:
+                  fiberTag = Block;
+                  break getTag;
+
+              }
+            }
+
+          }
+      }
+    }
+
+    fiber = createFiber(fiberTag, pendingProps, key, mode);
+    fiber.elementType = type;
+    fiber.type = resolvedType;
+    fiber.expirationTime = expirationTime;
+    return fiber;
+  }
+```
+
