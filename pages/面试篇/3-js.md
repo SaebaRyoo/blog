@@ -12,7 +12,7 @@
 
 闭包的目的是能在函数的外部作用域中访问函数内部的上下文。通过作用域以及作用域链，我们知道了当前作用域中（outer）的上下文(变量)，会在当前调用栈结束调用后被gc销毁。但是通过作用域链，我们可以在一个内部函数（inner）中访问outer作用域中的变量，创建引用关系。这样，就算调用栈执行完毕后也不会销毁outer中被引用的执行上下文。
 
-```
+```javascript
 
 function outer() {
     // outer
@@ -38,7 +38,7 @@ function outer() {
 
 继承在react跟node中也是比较常用的。
 
-```
+```javascript
 var jspy = (function() {
   var _count = 0;
 
@@ -64,7 +64,7 @@ var jspy = (function() {
 ### 匿名函数的典型用法
 
 匿名函数就是没有名称的函数, 如：
-```
+```javascript
 (function () {})()
 
 !function (){}()
@@ -90,7 +90,7 @@ function foo() {
 [call, apply实现](https://github.com/mqyqingfeng/Blog/issues/11)
 [bind实现](https://github.com/mqyqingfeng/Blog/issues/12)
 
-```
+```javascript
 Function.prototype.myCall = function(context) {
     // this传参为null则指向window
     var context = context || window;
@@ -143,7 +143,7 @@ Function.prototype.myBind = function(context) {
 
 ### [new 实现](https://github.com/mqyqingfeng/Blog/issues/13)
 
-```
+```javascript
 function fakeNew() {
     var obj = Object();
     var Constructor = [].shift.call(arguments);
@@ -158,7 +158,7 @@ function fakeNew() {
 ### 什么情况下会使用document.write()
 
 - 加载需要配合js脚本使用的外部css文件
-```
+```javascript
 <scirpt>
 document.write('<link  rel="stylesheet" href="style_neads_js.css">');
 </script>
@@ -167,7 +167,7 @@ document.write('<link  rel="stylesheet" href="style_neads_js.css">');
 - 在新打开的页面中写入数据时
 由于document.write会重写整个页面，异步调用会影响本页面的文档，如果在新窗口空白页调用，就没影响了。新开一个窗口，把本页面取到的数据在新窗口展示。
 
-```
+```javascript
 document.open();
 document.write('hello world');
 document.close();
@@ -194,10 +194,10 @@ document.close();
 - 这些attribute属性的JavaScript中的类型是Attr，而不仅仅是保存属性名和值这么简单；
 
 
-```
+```html
 <input id="in_2" sth="whatever">
 ```
-```
+```javascript
 var in2 = document.getElementById('in_2');
 console.log(in2);
 // id: "in_2"
@@ -243,7 +243,7 @@ console.log(in1.attibutes.sth);     // 'sth="whatever"'
 
 1. **Object.preventExtensions(obj)** 不可扩展（无法阻止深层属性的扩展）
 
-```
+```javascript
 
 function Person(name) {
 	this.name = name;
@@ -293,7 +293,7 @@ person2.info.sex; // male
 
 ### [深拷贝和浅拷贝](https://juejin.im/post/59ac1c4ef265da248e75892b)
 
-```
+```javascript
 var obj = {
   name: 'william',
   age: 20,

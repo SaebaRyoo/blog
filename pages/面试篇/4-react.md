@@ -13,7 +13,7 @@
 好处：不需要写多余的绑定, 能够矫正方法的this指向
 坏处：当组件更新时，每次都会重新bind一个事件处理函数。在大型应用中的性能消耗很明显
 
-```
+```jsx
     class C extends React.Component {
         handleClick() {
             console.log(this);
@@ -28,7 +28,7 @@
 好处：不会对性能造成潜在威胁
 坏处：增加代码的书写量
 
-```
+```jsx
     class C extends React.Component {
         constructor() {
             this.handleClick = this.handleClick.bind(this);
@@ -46,7 +46,7 @@
 好处： 不会对性能造成潜在威胁，简洁的书写方式.
 坏处： 需要使用babel才能使用
 
-```
+```jsx
     class C extends React.Component {
         handleClick = () => {
             console.log(this);
@@ -61,7 +61,7 @@
 好处：不会重复绑定，简洁的书写方式
 坏处：需要babel, 不能传参 
 
-```
+```jsx
 
     class C extends React.Component {
         handleClick() {
@@ -95,7 +95,7 @@ componentWillUnMount
 1. 函数组件(无状态组件)
 
 顾名思义，无状态组件的意思就是组件没有自己的state
-```
+```jsx
 function Person(props) {
     return (
         <div>{props.name}</div> 
@@ -115,7 +115,7 @@ class Child exntends React.Component {
 
 2. 类组件(有状态组件)
 
-```
+```jsx
 
 class Person exntends React.Component {
     state = {
@@ -166,7 +166,7 @@ const MyComponent = React.memo(function MyComponent(props) {})
 
 如果需要自行控制对比过程，需要如下写法
 
-```
+```javascript
 function MyComponent(props) {
   /* 使用 props 渲染 */
 }
@@ -203,7 +203,7 @@ refs是react提供的一种访问真实DOM的方法
 
 1. const instance = React.createRef();
 通过 instance.current访问DOM
-```
+```javascript
 class TestComp extends React.Component {
   constructor(props) {
     super(props);
@@ -225,7 +225,7 @@ class TestComp extends React.Component {
 }
 ```
 2. ref回调
-```
+```javascript
 
 class TestComp extends React.Component {
   constructor(props) {
@@ -256,7 +256,7 @@ class TestComp extends React.Component {
 ref 转发使得组件可以像暴露自己的 ref一样暴露子组件的 ref。
 
 Ref forwarding 是一种自动将ref 通过组件传递给其子节点的技术。下面我们通过具体的案例来演示一下效果。
-```
+```js
 const ref = React.createRef();
 const BtnComp = React.forwardRef((props, ref) => {
   return (
@@ -303,7 +303,7 @@ Ref转发不仅限于DOM组件。您也可以将refs转发给类组件实例。
 **高阶组件中的refs**
 高阶组件（HOC）是React中用于重用组件逻辑的高级技术，高阶组件是一个获取组件并返回新组件的函数。下面我们通过具体的案例来看一下refs如何在高阶组件钟正常使用。
 
-```
+```jsx
 
 // 记录状态值变更操作
 function logProps(Comp) {
@@ -406,7 +406,7 @@ HOC 在 React 的第三方库中很常见，例如 Redux 的 connect 和 Relay �
 
 现在我们手动实现一个和lazy一样的动态引入组件的高阶函数
 
-```
+```jsx
 // 
 function AsyncFunc(Comp) {
     class TempComp extends React.Component {

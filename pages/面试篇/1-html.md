@@ -7,7 +7,7 @@ DTD(document type definition, 文档类型定义) 是一系列的语法规则，
 ### 使用 data- 属性的好处是什么？
 
 可以存储一些不需要显示在浏览器上的额外信息，比如一片文章，并且你想要的存储一些额外的信息。
-```
+```html
 <article
   id="electriccars"
   data-columns="3">

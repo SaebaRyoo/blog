@@ -19,7 +19,7 @@ Normalize.css 只是一个很小的CSS文件，但它在默认的HTML元素样�
 
 - 浮动元素从网页的正常流中移出，但是保留了部分流动性。会影响其他元素的定位(比如文字会围绕着浮动元素)。这一点和绝对定位(absolute)不同，absolute元素完全脱离的文档流
 - 如果浮动元素的父元素只包含浮动元素，那么该父元素的高度会坍塌为0，我们可以通过清除从浮动元素后到父元素关闭前之间的浮动来修复这个问题(`clear: both | left | right`)。如， 给父元素加伪类
-```
+```css
   .father::after {
       content: ' ';
       display: block;
@@ -89,7 +89,7 @@ BFC是一种属性，它会影响元素的定位以及与其兄弟元素之间�
 - 条件判断 <!--[if !IE]><!--> 除IE外都可识别 <!--<![endif]-->
 
 ### 有哪些隐藏内容的方法？
-```
+```css
 overflow:hidden;
 opacity:0;
 visibility:hidden;
@@ -162,7 +162,7 @@ Content(内容) - 盒子的内容，显示文本和图像。
 
 可以使用css3的[box-sizing](https://developer.mozilla.org/zh-CN/docs/Web/CSS/box-sizing)属性来定义不同的和模型
 
-```
+```css
 /** 
 这是我们熟悉的符合W3C标准的盒子模型
 尺寸计算公式：
@@ -260,7 +260,7 @@ IFC中的line box一般左右都贴紧整个IFC，但是会因为float元素而�
 
 ### [css3动画](https://www.w3school.com.cn/css3/css3_animation.asp)
 
-```
+```css
 @keyframes first {
   from { 
     background: yellow;

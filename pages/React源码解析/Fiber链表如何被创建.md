@@ -10,7 +10,7 @@
 继续往下看后会进入到一个`legacyRenderSubtreeIntoContainer`函数中。
 这当中的`legacyCreateRootFromDOMContainer`就是为react创建一个基本的`FiberRoot`和`RootFiber`。以供下面调度任务中根据虚拟DOM逐步创建Fiber任务
 
-```
+```javascript
 
 function legacyRenderSubtreeIntoContainer(
   parentComponent: ?React$Component<any, any>,
@@ -65,7 +65,7 @@ function legacyRenderSubtreeIntoContainer(
 `updateContainer`中我们先看`createUpdate`函数。创建一个`update`对象. `update.payload.element`中保存的就是虚拟DOM。
 
 然后在`enqueueUpdate`中，建立与`update`的引用关系
-```
+```javascript
 export function enqueueUpdate<State>(fiber: Fiber, update: Update<State>) {
 
   // updateQueue结构，
@@ -122,7 +122,7 @@ export function enqueueUpdate<State>(fiber: Fiber, update: Update<State>) {
 
 下面进入到`beginWork`。该函数中会通过`workInProgress.tag`来判断当前fiber的类型，如果是一个类组件，则会进入`ClassComponent`分支中，如果是一个`宿主元素（div、span）`则进入`HostRoot`分支。然后调用`updateHostRoot`。这里主要需要看的就是`processUpdateQueue`。
 
-```
+```javascript
 
 function updateHostRoot(current, workInProgress, renderExpirationTime) {
   pushHostRootContext(workInProgress);
@@ -195,7 +195,7 @@ function updateHostRoot(current, workInProgress, renderExpirationTime) {
 
 然后就是`reconcileChildren -> reconcileChildFibers`在这里判断虚拟DOM是否为React节点
 
-```
+```javascript
 function reconcileChildFibers(returnFiber, currentFirstChild, newChild, expirationTime) {
       // This function is not recursive.
       // If the top level item is an array, we treat it as a set of children,
@@ -288,7 +288,7 @@ function reconcileChildFibers(returnFiber, currentFirstChild, newChild, expirati
 
 在`createFiberFromTypeAndProps`中会声明新的`tag`和`mode`。比如宿主元素(div、span)这类的就为**5**、类组件就为**1**。最后，再通过`createFiber` 创建链表的下一个节点，然后逐层返回。判断是否有新的Fiber任务
 
-```
+```javascript
 
   function createFiberFromTypeAndProps(type, // React$ElementType
   key, pendingProps, owner, mode, expirationTime) {
