@@ -91,7 +91,7 @@ function foo() {
 [bind实现](https://github.com/mqyqingfeng/Blog/issues/12)
 
 ```javascript
-Function.prototype.myCall = function(context) {
+Function.prototype.call = function(context) {
     // this传参为null则指向window
     var context = context || window;
     
@@ -108,7 +108,7 @@ Function.prototype.myCall = function(context) {
     return result;
 }
 
-Function.prototype.myApply = function(context, arr) {
+Function.prototype.apply = function(context, arr) {
     var context = Object(context) || window;
     
     context.fn = this;
@@ -128,7 +128,7 @@ Function.prototype.myApply = function(context, arr) {
     return result;
 }
 
-Function.prototype.myBind = function(context) {
+Function.prototype.bind = function(context) {
     var outerArgs = Array.prototype.slice.call(arguments, 1);
     // 实例
     var self = this;
@@ -154,6 +154,51 @@ function fakeNew() {
     return typeof ret === 'object' ? ret :obj;
 }
 ```
+
+### 函数防抖和函数节流
+**防抖函数概念：** 
+> 该函数只能在指定延时结束后才能调用，如果在过程中重复调用，则重新计时。
+
+**应用场景:** 
+1. 用户在搜索框输入时的数据查询，指定`n` 毫秒 延时，只能在输入完后过了`n`毫秒后才会去搜索，中间的持续输入则会重新计时
+2. 在监听window.onresize事件，并触发某些操作时。
+```js
+
+function debounce(fn, interval) {
+  var timer;
+  return function() {
+    var _self = this;
+    if (timer) clearTimeout(timer);
+
+    timer = setTimeout(function() {
+      fn.apply(_self, arguments)
+    }, interval)
+  }
+}
+
+```
+
+**函数节流:** 
+> 在规定时间内，函数只能被调用一次。如果单位时间内多次触发，则忽略
+
+**应用场景：**
+1. 点击搜索按钮时的防重复。
+2. 监听scroll事件时
+
+```js
+function throttle(fn, interval) {
+  var last = 0;
+  return function() {
+    var now = +new Date();
+    if (now - last >= interval) {
+      fn.apply(this, arguments)
+      last = +new Date();
+    }
+  }
+
+}
+```
+
 
 ### 什么情况下会使用document.write()
 
