@@ -33,7 +33,14 @@
 </details>
 
 <details>
-  <summary>React篇</summary>
+  <summary>设计模式</summary>
+  
+  - [ ] [设计原则](./javascript设计模式/0.设计原则.md)
+  
+</details>
+
+<details>
+  <summary>React相关</summary>
  
   - [x] [react基础](https://github.com/lxnxbnq/blog/issues/9)
   - [x] [React Fiber架构](https://github.com/lxnxbnq/blog/issues/10)
