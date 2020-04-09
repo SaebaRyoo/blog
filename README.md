@@ -23,7 +23,7 @@
   <summary>javascript</summary>
   
   - [x] [var、let、const的区别以及原理](https://github.com/lxnxbnq/blog/issues/12)
-  - [ ] [Object.defineProperty的用法](https://github.com/lxnxbnq/blog/issues/7)
+  - [x] [Object.defineProperty的用法](https://github.com/lxnxbnq/blog/issues/7)
   - [ ] [Proxy构造函数](https://github.com/lxnxbnq/blog/issues/13)
   - [ ] [Reflect]()
   - [x] [Promise/A+规范实现](https://github.com/lxnxbnq/blog/issues/14)
