@@ -35,14 +35,30 @@
 <details>
   <summary>设计模式</summary>
   
-  - [ ] [设计原则](https://github.com/lxnxbnq/blog/blob/master/pages/javascript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/0.%20%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99.md)
-  - [x] [单例模式](https://github.com/lxnxbnq/blog/blob/master/pages/javascript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/1.%20%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F.md)
-  - [x] [策略模式](https://github.com/lxnxbnq/blog/blob/master/pages/javascript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/2.%20%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F.md)
-  - [x] [代理模式](https://github.com/lxnxbnq/blog/blob/master/pages/javascript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/3.%20%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F.md)
-  - [x] [迭代器模式](https://github.com/lxnxbnq/blog/blob/master/pages/javascript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/4.%20%E8%BF%AD%E4%BB%A3%E5%99%A8%E6%A8%A1%E5%BC%8F.md)
-  - [x] [发布订阅/观察者模式](https://github.com/lxnxbnq/blog/blob/master/pages/javascript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/5.%20%E5%8F%91%E5%B8%83%E8%AE%A2%E9%98%85%E6%A8%A1%E5%BC%8F.md)
-  - [x] [命令模式](https://github.com/lxnxbnq/blog/blob/master/pages/javascript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/6.%20%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F.md)
+  - [ ] [设计原则](./pages/javascript设计模式/0.设计原则.md)
+  - [x] [单例模式](./pages/javascript设计模式/1.单例模式.md)
+  - [x] [策略模式](./pages/javascript设计模式/2.策略模式.md)
+  - [x] [代理模式](./pages/javascript设计模式/3.代理模式.md)
+  - [x] [迭代器模式](./pages/javascript设计模式/4.迭代器模式.md)
+  - [x] [发布订阅/观察者模式](./pages/javascript设计模式/5.发布订阅模式.md)
+  - [x] [命令模式](./pages/javascript设计模式/6.命令模式.md)
+  - [x] [组合模式](./pages/javascript设计模式/7.组合模式.md)
+  - [x] [模板方法模式](./pages/javascript设计模式/8.模板方法模式.md)
   
+</details>
+
+<details>
+  <summary>数据结构和算法学习</summary>
+  
+  - [x] [算法复杂度分析](./pages/数据结构和算法/学习/1.算法复杂度的分析.md)
+  - [ ] [数据结构-链表](./pages/数据结构和算法/学习/2.数据结构-链表.md)
+  - [x] [排序](./pages/数据结构和算法/学习/3.排序.md)
+  - [ ] [数据结构-栈](./pages/数据结构和算法/学习/3.数据结构-栈.md)
+  - [ ] [数据结构-队列](./pages/数据结构和算法/学习/4.数据结构-队列.md)
+  - [ ] [递归](./pages/数据结构和算法/学习/5.递归.md)
+  - [x] [排序O(n²)](./pages/数据结构和算法/学习/6.排序O(n²).md)
+  - [x] [排序O(nlogn)](./pages/数据结构和算法/学习/7.排序O(nlogn).md)
+  - [x] [排序O(n)](./pages/数据结构和算法/学习/8.排序O(n).md)
   
 </details>
 
