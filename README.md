@@ -8,7 +8,8 @@
   - [x] [js](./pages/面试篇/3-js.md)
   - [x] [react](./pages/面试篇/4-react.md)
   - [x] [webpack](./pages/面试篇/5-webpack.md)
-  - [x] [http](./pages/面试篇/6-http.md)
+  - [x] [http](./pages/面试篇/6-网络.md)
+  - [x] [性能优化](./pages/面试篇/7-前端性能优化.md)
   
 </details>
 
