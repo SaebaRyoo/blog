@@ -45,7 +45,6 @@ article.dataset.columns // 3
 3. 当为 **`<script async/>`** 时，并行下载script，然后执行script脚本，并阻塞html解析
 
 ### 为什么通常推荐将 CSS `<link>` 放置在 `<head></head>` 之间，而将 JS `<script>` 放置在 `</body>` 之前？你知道有哪些例外吗？
-
 把 **`<link>`** 标签放在 **`<head></head>`** 之间是规范要求的内容。
 此外，这种做法可以让页面逐步呈现，提高了用户体验。
 将样式表放在文档底部附近，会使许多浏览器（包括IE）不能逐步呈现页面。
@@ -73,7 +72,10 @@ article.dataset.columns // 3
 
 
 ### HTML 和 XHTML 有什么区别？
-
 XHTML是当前HTML版的继承者。HTML语法要求比较松散，这样对网页编写者来说，比较方便，但对于机器来说，语言的语法越松散，处理起来就越困难，对于传统的计算机来说，还有能力兼容松散语法，但对于许多其他设备，比如手机，难度就比较大。因此产生了语法要求更加严格的XHTML。
 
 ### [HMTL5新标签](https://developer.mozilla.org/zh-CN/docs/Web/Guide/HTML/HTML5/HTML5_element_list)
+
+### iframe的使用
+1. https://segmentfault.com/a/1190000004502619
+2. https://www.zhihu.com/question/20653055

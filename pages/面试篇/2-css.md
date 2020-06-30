@@ -1,22 +1,20 @@
 ### css 中的 class和id有什么区别？
-
 1. 权重不同
 2. class是可重复的； id是唯一的，如果有多个相同的id，只去文档中的最后一个
 3. id可以用来在页面中做锚点，当地址栏的hash和页面中某个id值一致，页面会自动滚动到该元素上
 
 ### 请问 "resetting" 和 "normalizing" CSS 之间的区别？你会如何选择，为什么？
 
-#### resetting
+1. resetting
 
 CSS Reset让各个浏览器的CSS样式有一个统一的基准，而实现这一基准最主要的方式就是“清零”
 
-#### normalizing
+2. normalizing
 
 Normalize.css 只是一个很小的CSS文件，但它在默认的HTML元素样式上 提供了跨浏览器的高度一致性。相比于传统的CSS reset，Normalize.css 是一种现代的、为HTML5准备的优质替代方案。
 
 
 ### 请解释css浮动(Float)以及其工作原理
-
 - 浮动元素从网页的正常流中移出，但是保留了部分流动性。会影响其他元素的定位(比如文字会围绕着浮动元素)。这一点和绝对定位(absolute)不同，absolute元素完全脱离的文档流
 - 如果浮动元素的父元素只包含浮动元素，那么该父元素的高度会坍塌为0，我们可以通过清除从浮动元素后到父元素关闭前之间的浮动来修复这个问题(`clear: both | left | right`)。如， 给父元素加伪类
 ```css
@@ -29,22 +27,35 @@ Normalize.css 只是一个很小的CSS文件，但它在默认的HTML元素样�
 - 把浮动元素的父元素属性设置为`overflow: auto | hidden`,会使其内部形成 **BFC** , 并且父元素会扩张自己，使其能够包围它的子元素
 
 
-### 请描述 BFC(Block Formatting Context) 及其如何工作？
+### [什么是IFC CSS2.1](https://juejin.im/entry/5938daf7a0bb9f006b2295db)
+IFC(Inline Formatting Contexts)直译为"内联格式化上下文"，IFC的line box（线框）高度由其包含行内元素中最高的实际高度计算而来（不受到竖直方向的padding/margin影响)
+IFC中的line box一般左右都贴紧整个IFC，但是会因为float元素而扰乱。float元素会位于IFC与与line box之间，使得line box宽度缩短。 同个ifc下的多个line box高度会不同。 IFC中时不可能有块级元素的，当插入块级元素时（如p中插入div）会产生两个匿名块与div分隔开，即产生两个IFC，每个IFC对外表现为块级元素，与div垂直排列。
+那么IFC一般有什么用呢？
+水平居中：当一个块要在环境中水平居中时，设置其为inline-block则会在外层产生IFC，通过text-align则可以使其水平居中。
+垂直居中：创建一个IFC，用其中一个元素撑开父元素的高度，然后设置其vertical-align:middle，其他行内元素则可以在此父元素下垂直居中。
+
+### 请描述 BFC(Block Formatting Context) 及其如何工作？ CSS2.1
 BFC是一种属性，它会影响元素的定位以及与其兄弟元素之间的互相作用。 中文常译为 **块级格式化上下文** 。是 W3C CSS 2.1 规范中的一个概念，它决定了元素如何对其内容进行定位，以及与其他元素的关系和相互作用。 在进行盒子元素布局的时候，BFC提供了一个环境，在这个环境中按照一定规则进行布局不会影响到其它环境中的布局。比如浮动元素会形成BFC，浮动元素内部子元素的主要受该浮动元素影响，两个浮动元素之间是互不影响的。 也就是说，如果一个元素符合了成为BFC的条件，该元素内部元素的布局和定位就和外部元素互不影响(除非内部的盒子建立了新的 BFC)，是一个隔离了的独立容器。（在 CSS3 中，BFC 叫做 Flow Root）
 
 
 #### 形成条件
-
 1. 浮动元素，float 除 none 以外的值；
-
 2. 绝对定位元素，position（absolute，fixed）；
-
 3. display 为以下其中之一的值 inline-blocks，table-cells，table-captions；
-
 4. overflow 除了 visible 以外的值（hidden，auto，scroll）
 
 参考:
 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Block_formatting_context)
+
+### 什么是GFC CSS3
+GFC(GridLayout Formatting Contexts)直译为"网格布局格式化上下文"，当为一个元素设置display值为grid的时候，此元素将会获得一个独立的渲染区域，我们可以通过在网格容器（grid container）上定义网格定义行（grid definition rows）和网格定义列（grid definition columns）属性各在网格项目（grid item）上定义网格行（grid row）和网格列（grid columns）为每一个网格项目（grid item）定义位置和空间。
+那么GFC有什么用呢，和table又有什么区别呢？首先同样是一个二维的表格，但GridLayout会有更加丰富的属性来控制行列，控制对齐以及更为精细的渲染语义和控制。
+
+### 什么是FFC CSS3
+FFC(Flex Formatting Contexts)直译为"自适应格式化上下文"，display值为flex或者inline-flex的元素将会生成自适应容器（flex container），可惜这个牛逼的属性只有谷歌和火狐支持，不过在移动端也足够了，至少safari和chrome还是OK的，毕竟这俩在移动端才是王道。
+Flex Box 由伸缩容器和伸缩项目组成。通过设置元素的 display 属性为 flex 或 inline-flex 可以得到一个伸缩容器。设置为 flex 的容器被渲染为一个块级元素，而设置为 inline-flex 的容器则渲染为一个行内元素。
+伸缩容器中的每一个子元素都是一个伸缩项目。伸缩项目可以是任意数量的。伸缩容器外和伸缩项目内的一切元素都不受影响。简单地说，Flexbox 定义了伸缩容器内伸缩项目该如何布局。
+
 
 ### CSS sprites
 
@@ -79,7 +90,6 @@ BFC是一种属性，它会影响元素的定位以及与其兄弟元素之间�
 ### 如何为有功能限制的浏览器提供网页？
 
 #### 兼容
-
 - 渐进增强的思路就是提供一个可用的原型，后来再为高级浏览器提供优化。
 - 优雅降级的思路是根据高级浏览器提供一个版本，然后有功能限制的浏览器只需要一个刚好能用的版本。
 
@@ -111,7 +121,6 @@ transform:scaleY(0);
 ### [如何优化网页的打印样式？](https://www.html.cn/archives/4731)
 
 ### 在书写高效的css时有哪些问题需要考虑
-
 1. 样式是：从右向左的解析一个选择器
 2. ID最快，Universal最慢 有四种类型的key selector，解析速度由快到慢依次是：ID、class、tag和universal
 3. 不要tag-qualify （永远不要这样做 ul#main-navigation { } ID已经是唯一的，不需要Tag来标识，这样做会让选择器变慢。）
@@ -246,17 +255,6 @@ absolute是基于第一个非static父元素的左上角border与padding交界�
 
 [CSS动画的性能优化- 云+社区- 腾讯云](https://cloud.tencent.com/developer/article/1178691)
 [实现达到60FPS 的高性能交互动画- 知乎](https://zhuanlan.zhihu.com/p/29729996)
-
-### IFC
-
-IFC(Inline Formatting Contexts)直译为"内联格式化上下文"，IFC的line box（线框）高度由其包含行内元素中最高的实际高度计算而来（不受到竖直方向的padding/margin影响)
-IFC中的line box一般左右都贴紧整个IFC，但是会因为float元素而扰乱。float元素会位于IFC与与line box之间，使得line box宽度缩短。 同个ifc下的多个line box高度会不同。 IFC中时不可能有块级元素的，当插入块级元素时（如p中插入div）会产生两个匿名块与div分隔开，即产生两个IFC，每个IFC对外表现为块级元素，与div垂直排列。
-那么IFC一般有什么用呢？
-水平居中：当一个块要在环境中水平居中时，设置其为inline-block则会在外层产生IFC，通过text-align则可以使其水平居中。
-垂直居中：创建一个IFC，用其中一个元素撑开父元素的高度，然后设置其vertical-align:middle，其他行内元素则可以在此父元素下垂直居中。
-
-**参考:**
-[到底什么是 BFC、IFC、GFC 和 FFC](https://juejin.im/entry/5938daf7a0bb9f006b2295db)
 
 ### [css3动画](https://www.w3school.com.cn/css3/css3_animation.asp)
 
