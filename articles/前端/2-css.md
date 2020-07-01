@@ -209,12 +209,12 @@ display 的属性值有：none|inline|block|inline-block|list-item|run-in|table|
 
 ### 请解释 relative、fixed、absolute 和 static 元素的区别
 
-|    | relative | fixed | absolute | static |
-| -- | -- | -- | -- | -- |
-| 含义 | 相对定位 | 固定定位 | 绝对定位 | 静态定位 |
-| 是否脱离正常文本流| 是 | 是 | 是| 否 | 
-|是否还占用正常文本流的位置 | 是 | 否 | 否 | - |
-| 相对于什么定位| 元素本身在正常文本流的位置 | 相对于浏览器窗口 | 相对于static定位以外的第一个父元素左上角border与padding交界处定位 | - |
+|    | relative | fixed | absolute | static | sticky
+| -- | -- | -- | -- | -- | -- |
+| 含义 | 相对定位 | 固定定位 | 绝对定位 | 静态定位 | 相对定位
+| 是否脱离正常文档流| 是 | 是 | 是| 否 | 否
+|是否还占用正常文档流的位置 | 是 | 否 | 否 | - | 是
+| 相对于什么定位| 元素本身在正常文档流的位置 | 相对于浏览器窗口 | 相对于static定位以外的第一个父元素左上角border与padding交界处定位 | - | 相对它的最近滚动祖先（当该祖先的overflow 是 hidden, scroll, auto, 或 overlay时） 和 最近块级祖先，包括table-related元素，基于top, right, bottom, 和 left的值进行偏移。
 
 ### 请问你有尝试过 CSS Flexbox 或者 Grid 标准规格吗
 
