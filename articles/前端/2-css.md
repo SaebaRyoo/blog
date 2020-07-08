@@ -26,12 +26,43 @@ Normalize.css 只是一个很小的CSS文件，但它在默认的HTML元素样�
 ```
 - 把浮动元素的父元素属性设置为`overflow: auto | hidden`,会使其内部形成 **BFC** , 并且父元素会扩张自己，使其能够包围它的子元素
 
+### 请解释你对盒模型的理解，以及如何在 CSS 中告诉浏览器使用不同的盒模型来渲染你的布局
+
+css盒模型本质上是一个盒子，封装周围的HTML元素
+
+#### 组成部分
+Margin(外边距) - 清除边框外的区域，外边距是透明的。
+Border(边框) - 围绕在内边距和内容外的边框。
+Padding(内边距) - 清除内容周围的区域，内边距是透明的。
+Content(内容) - 盒子的内容，显示文本和图像。
+
+可以使用css3的[box-sizing](https://developer.mozilla.org/zh-CN/docs/Web/CSS/box-sizing)属性来定义不同的和模型
+
+```css
+/** 
+这是我们熟悉的符合W3C标准的盒子模型
+尺寸计算公式：
+width = 内容的宽度
+height = 内容的高度
+ **/
+box-sizing: content-box 
+
+/** 
+ 此时的盒子模型符合IE6以前的版本，知识IE的bug,盒子的宽度包括了border和padding
+  尺寸计算公式：
+  width = border + padding + 内容的宽度
+  height = border + padding + 内容的高度
+ **/
+box-sizing: border-box 
+```
 
 ### [什么是IFC CSS2.1](https://juejin.im/entry/5938daf7a0bb9f006b2295db)
 IFC(Inline Formatting Contexts)直译为"内联格式化上下文"，IFC的line box（线框）高度由其包含行内元素中最高的实际高度计算而来（不受到竖直方向的padding/margin影响)
 IFC中的line box一般左右都贴紧整个IFC，但是会因为float元素而扰乱。float元素会位于IFC与与line box之间，使得line box宽度缩短。 同个ifc下的多个line box高度会不同。 IFC中时不可能有块级元素的，当插入块级元素时（如p中插入div）会产生两个匿名块与div分隔开，即产生两个IFC，每个IFC对外表现为块级元素，与div垂直排列。
 那么IFC一般有什么用呢？
+
 水平居中：当一个块要在环境中水平居中时，设置其为inline-block则会在外层产生IFC，通过text-align则可以使其水平居中。
+
 垂直居中：创建一个IFC，用其中一个元素撑开父元素的高度，然后设置其vertical-align:middle，其他行内元素则可以在此父元素下垂直居中。
 
 ### 请描述 BFC(Block Formatting Context) 及其如何工作？ CSS2.1
@@ -159,35 +190,6 @@ transform:scaleY(0);
 
 ### [请描述伪元素 (pseudo-elements) 及其用途](https://www.jianshu.com/p/9086114e07d4)
 
-### 请解释你对盒模型的理解，以及如何在 CSS 中告诉浏览器使用不同的盒模型来渲染你的布局
-
-css盒模型本质上是一个盒子，封装周围的HTML元素
-
-#### 组成部分
-Margin(外边距) - 清除边框外的区域，外边距是透明的。
-Border(边框) - 围绕在内边距和内容外的边框。
-Padding(内边距) - 清除内容周围的区域，内边距是透明的。
-Content(内容) - 盒子的内容，显示文本和图像。
-
-可以使用css3的[box-sizing](https://developer.mozilla.org/zh-CN/docs/Web/CSS/box-sizing)属性来定义不同的和模型
-
-```css
-/** 
-这是我们熟悉的符合W3C标准的盒子模型
-尺寸计算公式：
-width = 内容的宽度
-height = 内容的高度
- **/
-box-sizing: content-box 
-
-/** 
- 此时的盒子模型符合IE6以前的版本，知识IE的bug,盒子的宽度包括了border和padding
-  尺寸计算公式：
-  width = border + padding + 内容的宽度
-  height = border + padding + 内容的高度
- **/
-box-sizing: border-box 
-```
 ### 请罗列出你所知道的 display 属性的全部值
 
 display 的属性值有：none|inline|block|inline-block|list-item|run-in|table|inline-table|table-row-group|table-header-group|table-footer-group|table-row|table-column-group|table-column|table-cell|table-caption|inherit
@@ -275,3 +277,5 @@ div {
 ```
 
 ### [实现垂直居中和水平居中](https://segmentfault.com/a/1190000014116655)
+
+### 小数
