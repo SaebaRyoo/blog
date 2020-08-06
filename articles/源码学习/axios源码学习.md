@@ -61,7 +61,43 @@ function getDefaultAdapter() {
 
 3. 它是如何取消请求的呢？
 
-如果熟悉`XMLHttpRequest`的方法，那我们应该知道一个`abort`。对，在axios中同样是通过abort来实现的取消请求。在`xhr.js`中有这么一段代码
+首先，我们需要 通过 config.cancelToken = new axios.CancelToken(function executor(c) {}) 去实例化一个cancelToken， 传入executor的 c 则就是cancel函数，调用它则会取消当前请求
+```js
+
+function CancelToken(executor) {
+  if (typeof executor !== 'function') {
+    throw new TypeError('executor must be a function.');
+  }
+
+  var resolvePromise;
+  // 创建一个promise
+  this.promise = new Promise(function promiseExecutor(resolve) {
+    resolvePromise = resolve;
+  });
+
+  var token = this;
+  // 执行executor，并传入一个函数，当用户想要cancel掉某个请求时，只需要执行这个传入的函数，并且输入相应的提示信息即可
+  executor(function cancel(message) {
+    if (token.reason) {
+      // Cancellation has already been requested
+      return;
+    }
+
+    token.reason = new Cancel(message);、
+    // 执行promise的resolve，传入cancel
+    resolvePromise(token.reason);
+  });
+}
+
+// 创建一个cancel原因
+function Cancel(message) {
+  this.message = message;
+}
+
+```
+
+如果熟悉`XMLHttpRequest`的方法，那我们应该知道一个`abort`。对，在axios中同样是通过abort来实现的取消请求。在`xhr.js`中有这么一段代码。
+如果实例化了config.cancelToken，则会执行，并且reject一个原因
 
 ```js
   // 首先需要在request config中配置cancelToken，
@@ -88,7 +124,7 @@ function getDefaultAdapter() {
 import axios from 'axios';
 
 
-const whiteList = ['/youapi/1', '/youapi/2']; //这些接口不进行 防重复提交
+const whiteList = ['/api/1', '/api/2']; //这些接口不进行 防重复提交
 
 const requestMap = new Map();
 const CancelToken = axios.CancelToken;

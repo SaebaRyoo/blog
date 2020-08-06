@@ -195,7 +195,7 @@ constructor能够更快的发起请求，组件正处于初始化的过程，不
 3. componentDidUpdate
 当组件作为子组件，且props发生变化，需要更新组件数据时，可以在这个生命周期中发起网络请求
 
-### [调用setState之后发生了什么](https://zhuanlan.zhihu.com/p/65627731)
+### [调用setState之后发生了什么](https://juejin.im/post/5b45c57c51882519790c7441)
 
 ### [refs](https://juejin.im/post/5c9d783cf265da60d0005390#heading-8)
 
@@ -379,8 +379,6 @@ class TestComp extends React.Component {
 
 ### [路由实现原理](https://github.com/youngwind/blog/issues/109)
 
-### [react的setState同步还是异步？](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/17)
-
 ### Redux，react-redux等原理
 
 [redux原理](https://github.com/lxnxbnq/blog/issues/1)
@@ -475,3 +473,13 @@ BrowserRouter
 **为什么history.state可以在刷新页面后依然保存数据**
 
 浏览器会将在history过程中传入的state对象序列化以后保留在本地，所以当重新载入这个页面的时候，可以拿到这个对象。
+
+
+
+### react的优缺点，为什么选择react
+
+使用virtual dom
+
+react本身是一个视图框架，所以在处理复杂场景时，面对状态共享，路由跳转等都需要借助于其他库来完成，比如：
+使用redux状态管理工具来统一管理状态，以便于多个组件之间的状态共享。但是光使用redux无法实现同步View，所有，react-redux又应运而生。
+在解决路由跳转问题上，可以采用react-router来处理并同步View。
