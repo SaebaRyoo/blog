@@ -1,3 +1,32 @@
+### [HTTP method](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Methods)
+
+| 方法 | 作用 |
+| - | -|
+| [GET](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/GET) | GET方法请求一个指定资源的表示形式. 使用GET的请求应该只被用于获取数据. |
+| [HEAD](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/HEAD) | HEAD方法请求一个与GET请求的响应相同的响应，但没有响应体.|
+| [POST](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/POST)  | POST方法用于将实体提交到指定的资源，通常导致在服务器上的状态变化或副作用. |
+| [PUT](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/PUT) | PUT方法用请求有效载荷替换目标资源的所有当前表示。
+| [DELETE](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/DELETE) | DELETE方法删除指定的资源。
+| [CONNECT](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/CONNECT) | CONNECT方法建立一个到由目标资源标识的服务器的隧道。
+| [OPTIONS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/OPTIONS) | OPTIONS方法用于描述目标资源的通信选项。
+| [TRACE](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/TRACE) | TRACE方法沿着到目标资源的路径执行一个消息环回测试。
+| [PATCH](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/PATCH) | PATCH方法用于对资源应用部分修改。
+
+### XMLHttpRequest
+```js
+  var xhr = new XMLHttpRequest();
+  xhr.open(method, url);
+
+  xhr.onreadystatechange = function() {
+    if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+      console.log(xhr.responseText)
+    }
+  }
+  xhr.send();
+```
+
+
+
 ## http/0.9 http/1.0 http/1.1的发展
 
 ### http/0.9
