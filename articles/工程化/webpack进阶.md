@@ -1,3 +1,21 @@
+### 多页面应用（MPA）
+每个页面对应一个entry，一个html-webpack-plugin
+
+缺点： 每次新增或删除页面需要改webpack配置
+
+解决方案：
+
+动态获取entry和设置html-webpack-plugin数量。
+
+利用glob.sync,以同步的方式将页面查询出来
+```js
+
+module.exports = {
+    entry: glob.sync(path.join(__dirname, './src/*/index.js'))
+}
+```
+
+将对应的资源放在对应的文件夹中
 
 
 ### tree shaking（摇树优化）
