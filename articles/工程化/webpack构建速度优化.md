@@ -173,7 +173,35 @@ module.exports = {
 
 思路：
 - babel-loader 开启babel编译缓存
+```js
+rules: [
+    // babel-loader?cacheDirectory=true
+    {
+        test: /\.js$/,
+        use: [
+            {
+                loader: 'babel-loader',
+                options: {
+                    cacheDirectory: true
+                }
+            }
+        ]
+    }
+]
+```
 - terser-webpack-plugin开启压缩缓存
+```js
+module.exports = {
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        cache: true,
+      }),
+    ],
+  },
+};
+```
 - 使用cache-loader或者hard-source-webpack-plugin 针对模块的缓存开启
 
 
