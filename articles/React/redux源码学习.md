@@ -13,7 +13,7 @@
     - 支持监听action的分发，更新状态（dispatch(action)）；
     - 支持订阅store的变更（subscribe(listener)）；
 
-首先可以先看一下流程图
+下面是我画的一个流程图
 <div align="center">
    <img src="../../assets/redux.png" width = "600" alt="" align=center />
 </div>
@@ -173,6 +173,7 @@ dispatch 则是根据action来执行reducer中不同的更新逻辑，然后返�
 中间件的作用就是增强dispatch的功能，常见的有 `redux-logger`、`redux-thunk`等等。
 
 redux-logger: 支持在dispatch时输出更改前后更改后的数据
+
 redux-thunk: 则是支持dispatch一个函数，这可以完成一个控制反转，来使dispatch支持异步调用。
 
 ```js
@@ -229,9 +230,9 @@ redux-thunk: 则是支持dispatch一个函数，这可以完成一个控制反�
   }
 ```
 
-applyMiddleware 机制的核心在于组合 compose，将不同的 middlewares 一层一层包裹到原生的 dispatch 之上，而为了方便进行 compose，需对 middleware 的设计采用柯里化 curry 的方式，达到动态产生 next 方法以及保持 store 的一致性。由于在 middleware 中，可以像在外部一样轻松访问到 store, 因此可以利用当前 store 的 state 来进行条件判断，用 dispatch 方法拦截老的 action 或发送新的 action。
+applyMiddleware 机制的核心在于组合 compose，将不同的 middleware 一层一层包裹到原生的 dispatch 之上，而为了方便进行 compose，需对 middleware 的设计采用柯里化 curry 的方式，达到动态产生 next 方法以及保持 store 的一致性。由于在 middleware 中，可以像在外部一样轻松访问到 store, 因此可以利用当前 store 的 state 来进行条件判断，用 dispatch 方法拦截老的 action 或发送新的 action。
 
 总结：
 1. redux采用的是发布订阅模式
 2. dispatch会触发linsters
-3. middleware 的设计则采用柯里化，达到动态产生 next 方法以及保持 store 的一致性。
+3. middleware 的设计则采用柯里化，达到动态产生 next 方法以及保持 store 的一致性，避免多个middleware产生嵌套。
