@@ -180,8 +180,6 @@ function areEqual(prevProps, nextProps) {
 export default React.memo(MyComponent, areEqual);
 ```
 
-### [如何设计一个号组件](https://juejin.im/post/5c49cff56fb9a049bd42a90f)
-
 ### 在哪里进行网络请求？为什么？
 可以在constructor、componentDidMount、componentDidUpdate中发起网络请求。
 最常使用的是componentDidMount。
@@ -475,11 +473,3 @@ BrowserRouter
 浏览器会将在history过程中传入的state对象序列化以后保留在本地，所以当重新载入这个页面的时候，可以拿到这个对象。
 
 
-
-### react的优缺点，为什么选择react
-
-使用virtual dom
-
-react本身是一个视图框架，所以在处理复杂场景时，面对状态共享，路由跳转等都需要借助于其他库来完成，比如：
-使用redux状态管理工具来统一管理状态，以便于多个组件之间的状态共享。但是光使用redux无法实现同步View，所有，react-redux又应运而生。
-在解决路由跳转问题上，可以采用react-router来处理并同步View。
