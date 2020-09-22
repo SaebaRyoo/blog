@@ -83,7 +83,7 @@ function CancelToken(executor) {
       return;
     }
 
-    token.reason = new Cancel(message);、
+    token.reason = new Cancel(message);
     // 执行promise的resolve，传入cancel
     resolvePromise(token.reason);
   });
