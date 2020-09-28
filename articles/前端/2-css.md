@@ -209,7 +209,7 @@ display 的属性值有：none|inline|block|inline-block|list-item|run-in|table|
 - inline(行内元素): 无法设置宽高,不独占一行, 竖直方向的margin(margin-top、margin-bottom)不生效。
 - inline-block(行内块元素): 可以设置宽高，不独占一行
 
-### 请解释 relative、fixed、absolute 和 static 元素的区别
+### 请解释 relative、fixed、absolute、static、sticky 元素的区别
 
 |    | relative | fixed | absolute | static | sticky
 | -- | -- | -- | -- | -- | -- |
