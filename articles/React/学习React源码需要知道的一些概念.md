@@ -150,3 +150,17 @@ this.lanes = NoLanes;
 this.childLanes = NoLanes;
 ```
 
+### 双缓存
+react采用的**双缓存**技术。react中同时最多可以存在两颗`Fiber树`。当前屏幕展示的为`current fiber`。正在内存中构建的为`workInProgress fiber树`。
+
+它们通过`alternate`属性相连。
+```js
+currentFiber.alternate = workInProgress;
+workInProgress.altername = currentFiber;
+```
+react应用的根节点(`fiberRootNode`)通过`current`指针在不同的fiber树的`rootFiber`之间切换来实现`Fiber树`的切换。
+
+### 源码术语
+- Reconciler工作的阶段被称为render阶段。因为在该阶段会调用组件的render方法。
+- Renderer工作的阶段被称为commit阶段。就像你完成一个需求的编码后执行git commit提交代码。commit阶段会把render阶段提交的信息渲染在页面上。
+- render与commit阶段统称为work，即React在工作中。相对应的，如果任务正在Scheduler内调度，就不属于work。
