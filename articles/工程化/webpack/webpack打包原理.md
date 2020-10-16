@@ -26,6 +26,6 @@ const {
 ### 构建流程
 
 <div align="center">
-   <img src="../../assets/webpack流程.png" width = "100%" alt="" align=center />
+   <img src="../../../assets/webpack流程.png" width = "100%" alt="" align=center />
 </div>
 
