@@ -31,12 +31,12 @@ Normalize.css 只是一个很小的CSS文件，但它在默认的HTML元素样�
 css盒模型本质上是一个盒子，封装周围的HTML元素
 
 #### 组成部分
-Margin(外边距) - 清除边框外的区域，外边距是透明的。
-Border(边框) - 围绕在内边距和内容外的边框。
-Padding(内边距) - 清除内容周围的区域，内边距是透明的。
-Content(内容) - 盒子的内容，显示文本和图像。
+- Margin(外边距) - 清除边框外的区域，外边距是透明的。
+- Border(边框) - 围绕在内边距和内容外的边框。
+- Padding(内边距) - 清除内容周围的区域，内边距是透明的。
+- Content(内容) - 盒子的内容，显示文本和图像。
 
-可以使用css3的[box-sizing](https://developer.mozilla.org/zh-CN/docs/Web/CSS/box-sizing)属性来定义不同的和模型
+可以使用css3的[box-sizing](https://developer.mozilla.org/zh-CN/docs/Web/CSS/box-sizing)属性来定义不同的盒模型
 
 ```css
 /** 
@@ -277,5 +277,3 @@ div {
 ```
 
 ### [实现垂直居中和水平居中](https://segmentfault.com/a/1190000014116655)
-
-### 小数
